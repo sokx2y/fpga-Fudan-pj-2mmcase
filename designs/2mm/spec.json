@@ -1,0 +1,43 @@
+{
+  "algorithm_name": "polybench_2mm",
+  "dimensions": {
+    "NI": 100,
+    "NJ": 100,
+    "NK": 100,
+    "NL": 100
+  },
+  "data_type": "short",
+  "top_function": "kernel_2mm",
+  "interface": {
+    "seed": "input scalar",
+    "sum": "output pointer"
+  },
+  "cpu_baseline_ms": 4.632,
+  "target_device": {
+    "family": "XC7K325T",
+    "speed_grade": "-2",
+    "vivado_part": "xc7k325tffv900-2",
+    "part_is_fixed": true,
+    "part_check_command": "get_parts *xc7k325t*900*"
+  },
+  "tool_version": "Vivado/Vitis HLS 2023.2",
+  "final_metric": "latency_cycles * post_route_clock_period_ns",
+  "first_stage_architectures": [
+    "baseline",
+    "pipeline inner loops",
+    "k-unroll + array partition",
+    "sum-only no-D-store",
+    "C_colsum algorithm transform",
+    "tmp tile buffer",
+    "tile-fused communication between GEMM1 and GEMM2",
+    "systolic candidate later"
+  ],
+  "forbidden": [
+    "no 2025.2-only HLS APIs",
+    "no Alveo/U50/v++ flow",
+    "no URAM/HBM assumption",
+    "no blind 32x32 FP32 systolic copy",
+    "no automatic package substitution for the fixed Vivado part"
+  ]
+}
+

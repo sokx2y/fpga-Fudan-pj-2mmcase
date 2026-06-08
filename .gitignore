@@ -1,0 +1,56 @@
+# Vivado / Vitis / HLS generated files
+.Xil/
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+*.wcfg
+*.vcd
+*.fst
+*.rpt
+*.dcp
+*.bit
+*.bin
+*.ltx
+*.xsa
+*.xpr
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.srcs/
+*.gen/
+*.data/
+
+# Vitis HLS generated projects / solutions
+*_hls/
+hls_prj/
+solution*/
+.vitis_hls/
+vitis_hls.log
+
+# Temporary build outputs
+build/
+out/
+tmp/
+temp/
+__pycache__/
+*.pyc
+
+# Large/generated report folders, keep summaries manually if needed
+designs/**/reports/generated/
+designs/**/reports/vivado_raw/
+designs/**/variants/*/solution*/
+designs/**/variants/*/hls_prj/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Do not accidentally commit nested upstream repo internals
+refs/upstream/FPGA-Agent/.git/
+refs/upstream/GEMM-HLS/.git/
