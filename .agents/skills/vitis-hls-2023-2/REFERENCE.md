@@ -8,15 +8,17 @@ Project target:
 
 Use `designs/2mm/scripts/run_hls.tcl` as the flow template. The script accepts
 environment overrides for top function, source files, testbench files, clock
-period, and variant name, but the part is a hard constraint. If a different part
-is requested, the flow must fail immediately.
+period, variant name, cosimulation, and export. The part is not configurable.
 
-Required stages:
+Required default stages:
 
 - `csim_design`
 - `csynth_design`
-- `cosim_design`
-- `export_design -format ip_catalog`
+
+Optional stages:
+
+- `cosim_design` when `HLS_RUN_COSIM` is true.
+- `export_design -format ip_catalog` when `HLS_EXPORT_RTL` is true.
 
 Forbidden assumptions:
 

@@ -16,6 +16,6 @@ Use ordinary Vivado project or non-project implementation flow only:
 - `report_timing_summary`
 - `report_utilization`
 
-The implementation script must refuse any part other than
-`xc7k325tffv900-2`. It may not substitute another package.
+The implementation script must keep the part fixed to `xc7k325tffv900-2`. It
+may not substitute another package.
 

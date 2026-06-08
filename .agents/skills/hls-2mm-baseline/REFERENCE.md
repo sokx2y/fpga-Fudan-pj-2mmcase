@@ -11,9 +11,9 @@ Baseline target:
 Rules:
 
 - Keep the baseline conservative and correctness-first.
-- Use a deterministic test seed, for example `seed = 3`.
+- Use deterministic test seed, for example `seed = 3`.
 - Include a software golden reference in the C++ testbench.
 - Require C simulation correctness.
-- Require C synthesis to run.
+- Require C synthesis to run before using HLS reports.
 - Do not apply aggressive optimization in the baseline.
 

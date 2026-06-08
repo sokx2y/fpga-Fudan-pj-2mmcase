@@ -18,11 +18,11 @@ Borrowable ideas:
 Do not directly borrow:
 
 - fixed 32x32 FP32 array defaults
-- Alveo platform assumptions
+- Alveo U50 assumptions
 - URAM assumptions
-- wide AXI host-interface assumptions
+- 512-bit AXI assumptions
 - `v++` xclbin flow
-- fixed high-frequency assumptions
+- fixed 300 MHz assumptions
 
 Adaptation guidance:
 
@@ -30,4 +30,3 @@ Adaptation guidance:
 - Preserve the `sum`-only external result.
 - Recompute capacity and timing against `xc7k325tffv900-2`.
 - Validate final performance with post-route clock, not HLS estimate alone.
-

@@ -10,8 +10,8 @@ This repository is for the PolyBench 2mm HLS case targeting Vivado/Vitis HLS
 - Vivado part is fixed to `xc7k325tffv900-2`.
 - Do not use alternate packages as candidates, defaults, or automatic fallbacks.
 - `check_env.tcl` may use `get_parts *xc7k325t*900*` only to verify whether
-  Vivado recognizes the fixed part. If the fixed part is not available, fail
-  fast and print the matching available part list.
+  Vivado recognizes the fixed part. If the fixed part is not available, it must
+  fail fast and print the matching available part list.
 
 ## Compatibility Boundaries
 
@@ -32,3 +32,10 @@ This repository is for the PolyBench 2mm HLS case targeting Vivado/Vitis HLS
 - Optimization variants belong under `designs/2mm/variants/<variant_name>/`.
 - Each variant must record correctness, latency, clock, and resource data.
 
+## Current Scope
+
+- Do not implement `kernel_2mm_baseline.cpp` while repairing the project
+  skeleton.
+- Do not create optimization variants during skeleton repair.
+- Do not delete or overwrite the original `src/` and `tb/` files.
+- Do not replace `xc7k325tffv900-2` with another Vivado part.

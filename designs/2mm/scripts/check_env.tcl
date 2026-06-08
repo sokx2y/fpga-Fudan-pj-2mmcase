@@ -7,6 +7,7 @@ set available_parts [lsort [get_parts $part_pattern]]
 if {[lsearch -exact $available_parts $required_part] < 0} {
   puts stderr "ERROR: Vivado does not recognize required part: $required_part"
   puts stderr "Available parts from: get_parts $part_pattern"
+
   if {[llength $available_parts] == 0} {
     puts stderr "  <none>"
   } else {
@@ -14,9 +15,9 @@ if {[lsearch -exact $available_parts $required_part] < 0} {
       puts stderr "  $part"
     }
   }
+
   exit 1
 }
 
 puts "OK: Vivado recognizes required part: $required_part"
 exit 0
-

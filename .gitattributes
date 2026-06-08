@@ -1,27 +1,28 @@
-# Normalize text files in repo
+# Normalize text files in repo.
 * text=auto
 
-# Source / script / config files: keep LF
-*.c       text eol=lf
-*.h       text eol=lf
-*.cpp     text eol=lf
-*.hpp     text eol=lf
-*.v       text eol=lf
-*.sv      text eol=lf
-*.tcl     text eol=lf
-*.py      text eol=lf
-*.md      text eol=lf
-*.json    text eol=lf
-*.txt     text eol=lf
-*.gitignore text eol=lf
+# Source / script / config files: keep LF.
+*.c          text eol=lf
+*.h          text eol=lf
+*.cpp        text eol=lf
+*.hpp        text eol=lf
+*.v          text eol=lf
+*.sv         text eol=lf
+*.tcl        text eol=lf
+*.py         text eol=lf
+*.md         text eol=lf
+*.json       text eol=lf
+*.txt        text eol=lf
+.gitignore   text eol=lf
+.gitattributes text eol=lf
 
-# Binary files
-*.png     binary
-*.jpg     binary
-*.jpeg    binary
-*.docx    binary
-*.pdf     binary
-*.zip     binary
-*.bit     binary
-*.dcp     binary
-*.wdb     binary
+# Binary files.
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.docx       binary
+*.pdf        binary
+*.zip        binary
+*.bit        binary
+*.dcp        binary
+*.wdb        binary
