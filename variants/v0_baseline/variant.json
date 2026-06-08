@@ -1,0 +1,44 @@
+{
+  "variant_name": "v0_baseline",
+  "architecture": "baseline_two_gemm_bram_tmp",
+  "algorithm_change": false,
+  "source_root": "designs/2mm/src",
+  "testbench_root": "designs/2mm/tb",
+  "original_cpu_source": "src/2mm.c",
+  "target_part": "xc7k325tffv900-2",
+  "target_clock_ns": 10.0,
+  "tool_version": "Vivado/Vitis HLS 2023.2",
+  "cpu_baseline_ms": 4.632,
+  "correctness": {
+    "c_sim": null,
+    "expected_sum": null,
+    "actual_sum": null,
+    "status": "pending"
+  },
+  "latency": {
+    "cycles_min": null,
+    "cycles_max": null,
+    "estimated_clock_period_ns": null,
+    "post_route_clock_period_ns": null,
+    "runtime_ns": null
+  },
+  "resources": {
+    "DSP": null,
+    "BRAM": null,
+    "LUT": null,
+    "FF": null
+  },
+  "reports": {
+    "csim_log": null,
+    "csynth_report": null,
+    "cosim_report": null,
+    "vivado_timing_report": null,
+    "vivado_utilization_report": null
+  },
+  "decision": "pending_hls_run",
+  "notes": [
+    "Stage 0 HLS-migrated correctness baseline derived from root src/2mm.c and src/2mm.h behavior.",
+    "No pipeline, unroll, DATAFLOW, array partition, C_colsum, sum-only, systolic, or PE-array optimization.",
+    "Vitis HLS and Vivado have not been run by the agent."
+  ]
+}
