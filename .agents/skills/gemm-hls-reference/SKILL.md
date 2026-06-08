@@ -1,46 +1,55 @@
 ---
 name: gemm-hls-reference
-description: Use this skill when borrowing high-level GEMM architecture ideas and adapting them carefully to the 100x100 short 2mm project.
+description: Use this skill as a GEMM-HLS-to-2mm porting guide for mapping concrete GEMM structures into safe 2mm architecture candidates.
 ---
 
 # GEMM HLS Reference
 
 ## When to use
 
-Use this skill only for architecture inspiration that can be adapted to this
-specific 2mm case.
+Use this skill when an architecture candidate borrows concrete GEMM-HLS ideas:
+row-stationary scheduling, PE arrays, tile buffers, process-one-tile structure,
+wavefront feeding, or chunked accumulators.
 
 ## Inputs to read
 
 - `AGENTS.md`
 - `designs/2mm/spec.json`
 - `refs/repo_notes/GEMM-HLS-borrowed.md`
-- Any local upstream GEMM-HLS notes or examples, if available.
+- `refs/method_library/gemm_hls_method_map.md`
+- `refs/method_library/2mm_architecture_catalog.md`
+- `.agents/skills/gemm-hls-method-port/REFERENCE.md`
 
 ## Required workflow
 
-1. Identify the transferable architecture idea.
-2. Remove assumptions tied to FP32, Alveo, wide AXI, URAM, or xclbin flow.
-3. Recompute dimensions and buffering for 100x100 `short`.
-4. Preserve internally generated matrix semantics and `sum` output.
-5. Evaluate against XC7K325T resources and post-route timing.
+1. Identify the GEMM-HLS structure being borrowed.
+2. Use the mapping table in `REFERENCE.md` to translate it to 2mm.
+3. Remove FP32, U50, URAM, 512-bit AXI, `v++`, xclbin, and 300 MHz
+   assumptions.
+4. Recompute PE shape, tile shape, buffering, and edge handling for 100x100
+   `short`.
+5. Preserve internally generated A/B/C/tmp and the `sum` output.
+6. List HLS implementation notes and correctness risks before implementation.
 
 ## Hard constraints
 
 - The part is fixed to `xc7k325tffv900-2`.
 - Do not copy a GEMM-HLS implementation directly.
-- Do not assume 32x32 FP32 arrays, Alveo U50, URAM, 512-bit AXI, `v++`, or
-  300 MHz.
+- Do not assume matrix dimensions are multiples of 32.
+- Do not change the top interface `kernel_2mm(short seed, int *sum)`.
 
 ## Expected output
 
-- Adapted idea summary.
-- Risks and resource implications.
-- Notes on what cannot be reused.
+- GEMM-HLS-to-2mm mapping table.
+- Adapted stage decomposition.
+- PE/tile scaling recommendation.
+- Correctness risk and reject conditions.
+- HLS implementation notes.
 
 ## What not to do
 
 - Do not treat GEMM-HLS as drop-in source code.
 - Do not change the 2mm external interface.
 - Do not replace the fixed Vivado part.
+- Do not use scaled systolic design as baseline.
 

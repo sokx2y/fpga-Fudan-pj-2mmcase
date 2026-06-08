@@ -1,48 +1,58 @@
 ---
 name: hls-2mm-architecture-dse
-description: Use this skill when planning controlled 2mm architecture design-space exploration variants and report-driven comparisons.
+description: Use this skill when planning controlled 2mm architecture DSE with FPGA-Agent-style architect records and report-driven comparison.
 ---
 
 # HLS 2mm Architecture DSE
 
 ## When to use
 
-Use this skill after the baseline exists and the user asks to plan or compare
-architecture variants.
+Use this skill after the project skeleton is ready and the user asks to plan,
+rank, or compare architecture candidates. It may be used before the baseline
+exists for planning only, but it must not create kernel code by itself.
 
 ## Inputs to read
 
 - `AGENTS.md`
 - `designs/2mm/spec.json`
-- Baseline source and reports.
-- Existing variant metadata and reports.
+- `refs/method_library/fpga_agent_method_map.md`
+- `refs/method_library/gemm_hls_method_map.md`
+- `refs/method_library/2mm_architecture_catalog.md`
+- Baseline or variant reports when they exist.
 
 ## Required workflow
 
-1. Start from a known-correct baseline.
-2. Pick one controlled variant idea at a time.
-3. Record expected memory, compute, and timing pressure.
-4. Run correctness before trusting performance data.
-5. Use HLS reports for early estimates.
-6. Use Vivado post-route clock for final metric.
-7. Record latency, clock, resources, correctness, and report paths.
+1. Choose one candidate from the architecture catalog.
+2. Produce an FPGA-Agent-style Architect six-element record.
+3. Classify the candidate as Explorer, Exploiter, or Innovator.
+4. Fill in hardware structure, dataflow diagram, storage hierarchy,
+   GEMM1/GEMM2 communication, critical path estimate, resource scaling model,
+   expected latency formula, correctness risk, when to try, and when to reject.
+5. Run the T1 hardware checklist before allowing HLS synthesis.
+6. Use HLS reports for early estimates only.
+7. Use Vivado post-route clock for final metric.
 
 ## Hard constraints
 
 - The part is fixed to `xc7k325tffv900-2`.
 - Final metric is `latency_cycles * post_route_clock_period_ns`.
-- First-stage DSE must be manual and controlled.
-- Do not assume 2025.2 APIs or Alveo-style platform flow.
+- DSE must be manual, controlled, and report-driven.
+- Do not assume 2025.2 APIs, Alveo, U50, HBM, URAM, `v++`, xclbin, or
+  512-bit AXI.
+- Do not implement a kernel from this skill unless the user explicitly asks for
+  implementation in a later task.
 
 ## Expected output
 
-- Variant plan.
-- Report-backed comparison table.
-- Clear recommendation for the next controlled experiment.
+- Architecture decision record.
+- T1 checklist result.
+- Proceed/reject recommendation.
+- Report-backed comparison table when reports exist.
 
 ## What not to do
 
-- Do not create variants during skeleton repair.
+- Do not create variants during method migration.
 - Do not launch complex multi-agent exploration in the first stage.
-- Do not copy GEMM-HLS designs directly.
+- Do not copy GEMM-HLS source code directly.
+- Do not use `scaled_systolic_pe_array` as the baseline.
 
