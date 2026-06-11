@@ -1,0 +1,17 @@
+variant,main_idea,hls_cycles,vivado_clock_ns,post_route_wns_ns,runtime_ns,dsp,bram,status
+v0_baseline,direct baseline,2020033,,,"screening only",10,80,C-sim pass
+v1_dotprod_unroll10,dot unroll 10,43021,,,"screening only",204,216,C-sim pass
+dot50_out2_fullD,full tmp/full D physical baseline,30048,4.923,,"147926 approx",805,,route pass
+v3b_dot50_out2_noD_lane_sum,no full D lane_sum,20044,4.926,,"98737 approx",,,route pass
+v3b_dot25_out4_noD_lane_sum,DOT25 OUT4 noD lane_sum,18317,4.981,,"91237 approx",802,,route pass
+v3d_dot25_out4_initless_noD_lane_sum,on-the-fly A/B/C no full D,7116,4.963,0.037,35316.7,800,0,route pass
+v3f_dot25_out4_initless_row_pingpong_noD_lane_sum,row ping-pong DATAFLOW,4539,5.000,0.001,22695.0,800,0,route pass
+v3i_dot25_out4_initless_row_pingpong_dsp_pipeline,DSP latency 2 timing relief,4238,4.600,0.069,19494.8,800,0,former champion
+v3j_dot25_out4_initless_row_pingpong_dsp_mreg,DSP MREG attempt,4440,,,,800,0,reject
+v3k_dot25_out4_initless_row_pingpong_a_fanout_relief,A fanout relief,4238,,,,800,0,no HLS gain
+v3l_dot25_out4_static_pair_scheduler,static pair scheduler,4238,,,,800,0,no HLS gain
+v3m_dot20_out5_initless_row_pingpong_dsp_pipeline,DOT20 OUT5 full DSP,3733,4.600,-0.125,17171.8_if_passed,840,0,timing fail
+v3n_dot20_out5_jterm_timing_relief,j-term timing relief,3434,4.600,-0.230,,840,0,timing fail
+v3o_dot20_out5_add_latency_relief,latency-bound accumulator add,22825,,,,1000,0,reject HLS latency
+v3p_dot20_out5_wide_accum,wide local int accumulation,3534,4.600,0.006,16256.4,840,0,current champion
+v3q_dot20_out5_apint_fanout_relief,ap_int accumulator and DSP input fanout relief,3434,4.600,0.006,15796.4,840,0,current champion
