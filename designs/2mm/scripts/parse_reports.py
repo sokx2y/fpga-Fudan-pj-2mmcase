@@ -11,6 +11,7 @@ from typing import Any
 
 
 FIXED_PART = "xc7k325tffv900-2"
+CPU_BASELINE_NS = 4_632_000.0
 
 
 def read_text(path: Path | None) -> str:
@@ -85,7 +86,7 @@ def parse_hls_report(text: str) -> dict[str, Any]:
         "estimated_clock_period_ns": parse_number(r"Estimated Clock Period\s*:\s*([0-9.]+)", text),
         "resources": {
             "BRAM": parse_int(r"\|\s*BRAM_18K\s*\|\s*(\d+)", text),
-            "DSP": parse_int(r"\|\s*DSP48E\s*\|\s*(\d+)", text),
+            "DSP": parse_int(r"\|\s*DSP(?:48E)?\s*\|\s*(\d+)", text),
             "FF": parse_int(r"\|\s*FF\s*\|\s*(\d+)", text),
             "LUT": parse_int(r"\|\s*LUT\s*\|\s*(\d+)", text),
         },
@@ -93,10 +94,22 @@ def parse_hls_report(text: str) -> dict[str, Any]:
 
 
 def parse_timing_report(text: str) -> dict[str, Any]:
+    requested = parse_number(r"Requirement:\s*([0-9.]+)ns", text)
+    wns = parse_number(r"\bWNS(?:\([^)]*\))?\s*\|?\s*([-+]?[0-9.]+)", text)
+    routed_critical = None
+    if requested is not None and wns is not None:
+        routed_critical = requested - wns
+
+    achieved_fmax = None
+    if routed_critical is not None and routed_critical > 0:
+        achieved_fmax = 1000.0 / routed_critical
+
     return {
         "wns_ns": parse_number(r"\bWNS(?:\([^)]*\))?\s*\|?\s*([-+]?[0-9.]+)", text),
         "tns_ns": parse_number(r"\bTNS(?:\([^)]*\))?\s*\|?\s*([-+]?[0-9.]+)", text),
-        "post_route_clock_period_ns": parse_number(r"Requirement:\s*([0-9.]+)ns", text),
+        "requested_clock_period_ns": requested,
+        "routed_critical_path_period_ns": routed_critical,
+        "achieved_fmax_mhz": achieved_fmax,
     }
 
 
@@ -115,6 +128,19 @@ def summarize(report_dir: Path, hls: Path | None, timing: Path | None, util: Pat
     timing_report = timing or find_first(roots, ("*timing*.rpt", "*timing_summary*.rpt"))
     utilization_report = util or find_first(roots, ("*utilization*.rpt", "*util*.rpt"))
 
+    hls_data = parse_hls_report(read_text(hls_report))
+    timing_data = parse_timing_report(read_text(timing_report))
+    utilization_data = parse_utilization_report(read_text(utilization_report))
+
+    latency = hls_data.get("latency_cycles_min")
+    post_route_period = timing_data.get("routed_critical_path_period_ns")
+    final_runtime_ns = None
+    speedup = None
+    if latency is not None and post_route_period is not None:
+        final_runtime_ns = latency * post_route_period
+        if final_runtime_ns > 0:
+            speedup = CPU_BASELINE_NS / final_runtime_ns
+
     return {
         "part": FIXED_PART,
         "report_dir": str(report_dir),
@@ -123,9 +149,15 @@ def summarize(report_dir: Path, hls: Path | None, timing: Path | None, util: Pat
             "vivado_timing": str(timing_report) if timing_report else None,
             "vivado_utilization": str(utilization_report) if utilization_report else None,
         },
-        "hls": parse_hls_report(read_text(hls_report)),
-        "vivado_timing": parse_timing_report(read_text(timing_report)),
-        "vivado_utilization": parse_utilization_report(read_text(utilization_report)),
+        "hls": hls_data,
+        "vivado_timing": timing_data,
+        "vivado_utilization": utilization_data,
+        "final_metrics": {
+            "final_runtime_ns": final_runtime_ns,
+            "speedup_vs_cpu_4p632ms": speedup,
+            "ranking_metric": "latency_cycles * post_route_clock_period_ns",
+            "ranking_status": "post_route_runtime_ready" if final_runtime_ns is not None else "pending_post_route_timing",
+        },
     }
 
 

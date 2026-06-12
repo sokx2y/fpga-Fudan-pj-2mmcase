@@ -8,6 +8,10 @@ The final metric is:
 
 `runtime_ns = latency_cycles * post_route_clock_period_ns`
 
+HLS latency models in this catalog are screening estimates. They can identify
+promising candidates, but final ranking requires RTL validation and Vivado
+post-route timing on `xc7k325tffv900-2`.
+
 ## Architecture 1: baseline_two_gemm_bram_tmp
 
 ### Hardware Structure
@@ -366,4 +370,3 @@ equivalence.
 
 High: wavefront indexing, edge tiles, accumulator chunking, and overflow order
 can all break equivalence.
-

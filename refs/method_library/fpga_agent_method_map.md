@@ -56,6 +56,11 @@ For this 2mm project, the method layer is migrated as follows:
 | T4 implementation | Use Vivado post-route timing for final `runtime_ns`. |
 | Report-driven comparison | Store latency, clock, utilization, WNS, correctness, and report paths. |
 
+HLS-only sweeps may rank `hls_latency_winner` or
+`hls_estimated_runtime_winner`. The final project winner must be a
+`post_route_runtime_winner` selected from RTL-validated, timing-clean,
+resource-fitting Vivado implementations.
+
 ## Architect Six Elements
 
 Each architecture candidate must include:
@@ -128,4 +133,5 @@ This method map turns 2mm exploration into a staged decision process:
 3. Run the T1 hardware checklist.
 4. Only then create source changes or run HLS.
 5. Treat Vivado implementation clock as the final performance clock.
-
+6. Explore architecture and clock constraints together for shortlisted
+   candidates before final ranking.

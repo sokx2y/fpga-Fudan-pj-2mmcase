@@ -22,6 +22,31 @@
   },
   "tool_version": "Vivado/Vitis HLS 2023.2",
   "final_metric": "latency_cycles * post_route_clock_period_ns",
+  "cpu_baseline_comparison": "speedup_vs_4.632_ms",
+  "ranking_labels": [
+    "hls_latency_winner",
+    "hls_estimated_runtime_winner",
+    "post_route_runtime_winner"
+  ],
+  "dse_dimensions": {
+    "architecture_parameters": [
+      "DOT_UNROLL_FACTOR",
+      "OUT_UNROLL_FACTOR",
+      "full D versus on-the-fly D reduction",
+      "full tmp versus row or tile tmp",
+      "pipeline structure",
+      "DATAFLOW",
+      "buffering and banking",
+      "fusion"
+    ],
+    "clock_parameters_ns": [
+      10.0,
+      8.0,
+      7.0,
+      6.5,
+      6.0
+    ]
+  },
   "first_stage_architectures": [
     "baseline",
     "pipeline inner loops",

@@ -27,6 +27,10 @@ GEMM-HLS is useful here as a hardware architecture reference:
 - Diagonal or wavefront-style feeding for PE arrays.
 - Chunked accumulation to manage parallel partial sums.
 
+These methods are architecture generators, not final ranking rules. Any
+GEMM-HLS-derived 2mm candidate must be ranked by implemented runtime:
+`latency_cycles * post_route_clock_period_ns`.
+
 ## Hardware Meaning
 
 - PE array: maps repeated dot-product operations onto parallel multiply-accumulate
@@ -98,4 +102,3 @@ Direct copying is forbidden and technically unsafe because this project differs:
 - Chunked accumulation can change reduction order and integer overflow behavior.
 - Removing D storage is safe only if the original observable behavior and
   intermediate type semantics are preserved.
-

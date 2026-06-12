@@ -21,6 +21,11 @@ This repository is for the PolyBench 2mm HLS case targeting Vivado/Vitis HLS
 - Do not assume Alveo, U50, `v++`, xclbin, HBM, or URAM.
 - Final performance metric is:
   `runtime_ns = latency_cycles * post_route_clock_period_ns`.
+- HLS latency and HLS estimated clock are screening metrics only. Final ranking
+  requires RTL validation, Vivado synthesis, place-and-route, routed resources,
+  and post-route timing.
+- Clock constraint is a design variable. Architecture candidates should be
+  evaluated with relevant HLS/Vivado clock points before final selection.
 
 ## Source Layout
 
@@ -30,7 +35,10 @@ This repository is for the PolyBench 2mm HLS case targeting Vivado/Vitis HLS
 - New C++ testbench source belongs under `designs/2mm/tb/`.
 - New flow scripts belong under `designs/2mm/scripts/`.
 - Optimization variants belong under `designs/2mm/variants/<variant_name>/`.
-- Each variant must record correctness, latency, clock, and resource data.
+- Each serious variant must record correctness, HLS latency, HLS estimated
+  clock/resources, RTL cosimulation status when shortlisted, Vivado
+  implementation status, routed resources, post-route timing, final runtime,
+  and speedup versus the 4.632 ms CPU baseline.
 
 ## Current Scope
 
