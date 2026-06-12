@@ -298,7 +298,7 @@ So V5A's cycle model is approximately:
 The important observation is that each row is much cheaper than a normal GEMM
 row, but V5A still processes rows serially.
 
-## V5B Resource-Spending Route
+## V5B Resource-Spending Result
 
 V5B spends resources on row-level parallelism:
 
@@ -320,18 +320,32 @@ Using the V5A per-row estimate as a first model:
 ideal V5B cycles ~= 5 * 47 + group/final-reduction overhead
 ```
 
-This should be far below the V4A `3434 cycles` result if HLS actually
-replicates the row lanes instead of sharing one row engine.
-
-The intended resource trade is:
+The HLS report confirmed this model:
 
 ```text
-V5A: about 33 DSP, 4704 cycles
-V5B: many replicated row engines, expected hundreds of DSP, much lower cycles
-V4A: post-route 840 DSP, 3434 cycles
+V5B HLS latency: 238 cycles
+Top loop: 5 row groups, 235 cycles
+HLS resources: DSP 660, FF 85989, LUT 103494, BRAM 0
 ```
 
-V5B is therefore the right direction after seeing V5A use only 3% of DSPs.
+Vivado 2023.2 then routed the design at 4.50 ns:
+
+```text
+Routed WNS: +0.210 ns
+Routed WHS: +0.047 ns
+Placed resources: LUT 48766, FF 50960, DSP 620, BRAM 0
+Final runtime: 238 * 4.500 ns = 1071.0 ns
+```
+
+The actual resource/performance trade is:
+
+```text
+V5A: 33 DSP HLS estimate, 4704 cycles
+V5B: 660 DSP HLS estimate, 238 cycles
+V4A: 840 DSP post-route, 3434 cycles at 4.500 ns
+```
+
+V5B is therefore the successful resource-spending version of the V5 idea.
 
 ## Why V5 Must Be Reported Carefully
 
@@ -385,6 +399,12 @@ two dot-product GEMM stages
   -> sum
 ```
 
-V5A proved the transform but did not spend resources.  V5B is the intended
-resource-spending version: process 20 rows in parallel and use the unused
-XC7K325T resources to move below the V4A cycle region.
+V5A proved the transform but did not spend resources.  V5B processed 20 rows
+in parallel and used the XC7K325T resources to move far below the V4A cycle
+region:
+
+```text
+V4A final runtime: 15453.0 ns
+V5B final runtime:  1071.0 ns
+Runtime speedup:    14.43x
+```
